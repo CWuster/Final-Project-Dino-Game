@@ -56,7 +56,7 @@ def generate_raw_data(image_path: str) -> None:
                 )
         file.write("  };")
         file.write(os.linesep)
-        file.write(f"#endif //__{c_array.upper()}__")
+        file.write(f"#endif //__{new_path.stem.upper()}__")
 
 
 def show_image(image_path: str) -> None:
