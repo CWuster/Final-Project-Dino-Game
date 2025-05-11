@@ -1,40 +1,48 @@
 import os
+from pathlib import Path
 from PIL import Image
 
 
 def resize_image(image_path: str, size: tuple[int, int]) -> list[list[int]]:
     image = Image.open(image_path)
     image.thumbnail(size, resample=Image.NEAREST)
-    new_image_path = image_path.strip("./")
-    image.save(f"./modified_{new_image_path}")
+    new_path = Path(image_path)
+
+    new_name = f"modified_{new_path.stem}{new_path.suffix}"
+    cur_dir = Path.cwd()
+
+    image.save(cur_dir / new_name)
 
 
 def generate_raw_data(image_path: str) -> None:
     image = Image.open(image_path)
     x, y = image.size
     pixel_image = image.load()
-    c_array = image_path.strip("./").strip(".png")
-    c_array_path = c_array + ".h"
 
-    with open(c_array_path, "w") as file:
-        file.write(f"#ifndef __{c_array.upper()}__")
+    new_path = Path(image_path)
+
+    c_array = f"{new_path.stem}" + ".h"
+
+    c_array_path = Path.cwd()
+
+    with open(c_array_path / c_array, "w") as file:
+        file.write(f"#ifndef __{new_path.stem.upper()}__")
         file.write(os.linesep)
-        file.write(f"#define __{c_array.upper()}__")
+        file.write(f"#define __{new_path.stem.upper()}__")
         file.write(os.linesep)
         file.write(
             f"""typedef struct {{
             int r;
             int b;
             int g;
-            }} {image_path.strip("./").strip(".png")};
+            }} {new_path.stem};
         """
         )
         file.write(
             f"""
-        const {c_array} image_rom []
+        const {new_path.stem} image_rom []
         """
         )
-    with open(c_array_path, "a") as file:
         file.write(" = {")
         file.write(os.linesep)
         for j in range(y):
