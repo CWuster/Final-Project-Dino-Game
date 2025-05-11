@@ -11,7 +11,7 @@ def resize_image(image_path: str, size: tuple[int, int]) -> None:
     new_name = f"modified_{new_path.stem}{new_path.suffix}"
     cur_dir = Path.cwd()
 
-    image.save(cur_dir / new_name)
+    image.save(cur_dir / f"Modified_Images" / new_name)
 
 
 def generate_raw_data(image_path: str) -> None:
@@ -25,7 +25,7 @@ def generate_raw_data(image_path: str) -> None:
 
     c_array_path = Path.cwd()
 
-    with open(c_array_path / c_array, "w") as file:
+    with open(c_array_path / f"Generated_Code" / c_array, "w") as file:
         file.write(f"#ifndef __{new_path.stem.upper()}__")
         file.write(os.linesep)
         file.write(f"#define __{new_path.stem.upper()}__")
@@ -65,10 +65,10 @@ def show_image(image_path: str) -> None:
 
 
 if __name__ == "__main__":
-    dino_image_path = "./dino.png"
-    cactus_image_path = "./cactus.png"
+    dino_image_path = "./Images/dino.png"
+    cactus_image_path = "./Images/cactus.png"
 
     resize_image(dino_image_path, (50, 50))
     resize_image(cactus_image_path, (10, 10))
-    generate_raw_data("./modified_dino.png")
-    generate_raw_data("./modified_cactus.png")
+    generate_raw_data("./Modified_Images/modified_dino.png")
+    generate_raw_data("./Modified_Images/modified_cactus.png")
