@@ -1,9 +1,9 @@
 import os
 from pathlib import Path
+from typing import Tuple
 from PIL import Image
 
-
-def resize_image(image_path: str, size: tuple[int, int]) -> None:
+def resize_image(image_path: str, size: Tuple[int, int]) -> None:
     image = Image.open(image_path)
     image.thumbnail(size, resample=Image.NEAREST)
     new_path = Path(image_path)
@@ -11,63 +11,54 @@ def resize_image(image_path: str, size: tuple[int, int]) -> None:
     new_name = f"modified_{new_path.stem}{new_path.suffix}"
     cur_dir = Path.cwd()
 
-    image.save(cur_dir / f"Modified_Images" / new_name)
+    # Ensure the output directory exists
+    output_dir = cur_dir / "Modified_Images"
+    output_dir.mkdir(exist_ok=True)
 
+    image.save(output_dir / new_name)
 
 def generate_raw_data(image_path: str) -> None:
     image = Image.open(image_path)
     x, y = image.size
     pixel_image = image.load()
-
     new_path = Path(image_path)
 
-    c_array = f"{new_path.stem}" + ".h"
+    c_array = f"{new_path.stem}.h"
+    c_array_path = Path.cwd() / "Generated_Code"
+    c_array_path.mkdir(exist_ok=True)
 
-    c_array_path = Path.cwd()
+    with open(c_array_path / c_array, "w") as file:
+        file.write(f"#ifndef __{new_path.stem.upper()}__\n")
+        file.write(f"#define __{new_path.stem.upper()}__\n\n")
+        file.write(f"typedef struct {{\n")
+        file.write(f"    int r;\n")
+        file.write(f"    int g;\n")
+        file.write(f"    int b;\n")
+        file.write(f"}} {new_path.stem};\n\n")
+        file.write(f"const {new_path.stem} image_rom[] = {{\n")
 
-    with open(c_array_path / f"Generated_Code" / c_array, "w") as file:
-        file.write(f"#ifndef __{new_path.stem.upper()}__")
-        file.write(os.linesep)
-        file.write(f"#define __{new_path.stem.upper()}__")
-        file.write(os.linesep)
-        file.write(
-            f"""typedef struct {{
-            int r;
-            int b;
-            int g;
-            }} {new_path.stem};
-        """
-        )
-        file.write(
-            f"""
-        const {new_path.stem} image_rom []
-        """
-        )
-        file.write(" = {")
-        file.write(os.linesep)
         for j in range(y):
-            for i in range(
-                x
-            ):  # we leave out the alpha so we take the first three elements
-                file.write(
-                    f"""
-                           {{{str(pixel_image[j,i][0:3]).strip("()")}}}, 
-                """
-                )
-        file.write("  };")
-        file.write(os.linesep)
-        file.write(f"#endif //__{new_path.stem.upper()}__")
+            for i in range(x):
+                r, g, b = pixel_image[i, j][0:3]
+                file.write(f"    {{{r}, {g}, {b}}},\n")
 
+        file.write("};\n\n")
+        file.write(f"#endif // __{new_path.stem.upper()}__\n")
 
 def show_image(image_path: str) -> None:
     image = Image.open(image_path)
     image.show()
 
-
 if __name__ == "__main__":
+    # Ensure required folders exist
+    (Path.cwd() / "Modified_Images").mkdir(exist_ok=True)
+    (Path.cwd() / "Generated_Code").mkdir(exist_ok=True)
+
+    # Input images
     dino_image_path = "./Images/dino.png"
     cactus_image_path = "./Images/cactus.png"
 
+    # Resize and convert to C header format
     resize_image(dino_image_path, (50, 50))
     resize_image(cactus_image_path, (10, 10))
     generate_raw_data("./Modified_Images/modified_dino.png")
