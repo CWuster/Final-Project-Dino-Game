@@ -1,3 +1,5 @@
+#ifndef __MODIFIED_CACTUS__
+#define __MODIFIED_CACTUS__
 typedef struct {
             int r;
             int b;
@@ -6,6 +8,7 @@ typedef struct {
         
         const modified_cactus image_rom []
          = {
+
                            {166, 165, 165}, 
                 
                            {163, 164, 163}, 
@@ -206,3 +209,4 @@ typedef struct {
                 
                            {162, 163, 161}, 
                   };
+#endif //__MODIFIED_CACTUS__

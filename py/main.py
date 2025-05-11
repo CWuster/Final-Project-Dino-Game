@@ -1,3 +1,4 @@
+import os
 from PIL import Image
 
 
@@ -16,6 +17,10 @@ def generate_raw_data(image_path: str) -> None:
     c_array_path = c_array + ".h"
 
     with open(c_array_path, "w") as file:
+        file.write(f"#ifndef __{c_array.upper()}__")
+        file.write(os.linesep)
+        file.write(f"#define __{c_array.upper()}__")
+        file.write(os.linesep)
         file.write(
             f"""typedef struct {{
             int r;
@@ -31,7 +36,7 @@ def generate_raw_data(image_path: str) -> None:
         )
     with open(c_array_path, "a") as file:
         file.write(" = {")
-        file.write("\r")
+        file.write(os.linesep)
         for j in range(y):
             for i in range(
                 x
@@ -42,6 +47,8 @@ def generate_raw_data(image_path: str) -> None:
                 """
                 )
         file.write("  };")
+        file.write(os.linesep)
+        file.write(f"#endif //__{c_array.upper()}__")
 
 
 def show_image(image_path: str) -> None:
