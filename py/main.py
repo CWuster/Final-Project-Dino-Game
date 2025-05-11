@@ -3,7 +3,7 @@ from pathlib import Path
 from PIL import Image
 
 
-def resize_image(image_path: str, size: tuple[int, int]) -> list[list[int]]:
+def resize_image(image_path: str, size: tuple[int, int]) -> None:
     image = Image.open(image_path)
     image.thumbnail(size, resample=Image.NEAREST)
     new_path = Path(image_path)
