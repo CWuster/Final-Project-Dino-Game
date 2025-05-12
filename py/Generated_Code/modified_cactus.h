@@ -1,7 +1,7 @@
 #ifndef __MODIFIED_CACTUS__
 #define __MODIFIED_CACTUS__
 
-const unsigned char image_rom[5][5] = {
+const unsigned char modified_cactus_rom[5][5] = {
 {   129,
    128,
    86,

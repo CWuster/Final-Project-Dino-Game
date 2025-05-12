@@ -1,7 +1,7 @@
 #ifndef __MODIFIED_DINO__
 #define __MODIFIED_DINO__
 
-const unsigned char image_rom[10][10] = {
+const unsigned char modified_dino_rom[10][10] = {
 {   43,
    43,
    43,

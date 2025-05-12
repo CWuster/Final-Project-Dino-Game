@@ -32,7 +32,7 @@ def generate_raw_data(image_path: str) -> None:
     with open(c_array_path / c_array, "w") as file:
         file.write(f"#ifndef __{new_path.stem.upper()}__\n")
         file.write(f"#define __{new_path.stem.upper()}__\n\n")
-        file.write(f"const unsigned char image_rom[{x}][{y}] = {{\n")
+        file.write(f"const unsigned char {new_path.stem}_rom[{x}][{y}] = {{\n")
 
         for j in range(y):
             file.write("{")
