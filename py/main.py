@@ -32,7 +32,7 @@ def generate_raw_data(image_path: str) -> None:
     with open(c_array_path / c_array, "w") as file:
         file.write(f"#ifndef __{new_path.stem.upper()}__\n")
         file.write(f"#define __{new_path.stem.upper()}__\n\n")
-        file.write(f"const char image_rom[{x}][{y}] = {{\n")
+        file.write(f"const unsigned char image_rom[{x}][{y}] = {{\n")
 
         for j in range(y):
             file.write("{")
@@ -61,7 +61,7 @@ if __name__ == "__main__":
     cactus_image_path = "./Images/cactus.png"
 
     # Resize and convert to C header format
-    resize_image(dino_image_path, (50, 50))
-    resize_image(cactus_image_path, (10, 10))
+    resize_image(dino_image_path, (10, 20))
+    resize_image(cactus_image_path, (5, 5))
     generate_raw_data("./Modified_Images/modified_dino.png")
     generate_raw_data("./Modified_Images/modified_cactus.png")
