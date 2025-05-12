@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Tuple
 from PIL import Image
 
+
 def resize_image(image_path: str, size: Tuple[int, int]) -> None:
     image = Image.open(image_path)
     image.thumbnail(size, resample=Image.NEAREST)
@@ -17,6 +18,7 @@ def resize_image(image_path: str, size: Tuple[int, int]) -> None:
 
     image.save(output_dir / new_name)
 
+
 def generate_raw_data(image_path: str) -> None:
     image = Image.open(image_path)
     x, y = image.size
@@ -30,24 +32,24 @@ def generate_raw_data(image_path: str) -> None:
     with open(c_array_path / c_array, "w") as file:
         file.write(f"#ifndef __{new_path.stem.upper()}__\n")
         file.write(f"#define __{new_path.stem.upper()}__\n\n")
-        file.write(f"typedef struct {{\n")
-        file.write(f"    int r;\n")
-        file.write(f"    int g;\n")
-        file.write(f"    int b;\n")
-        file.write(f"}} {new_path.stem};\n\n")
-        file.write(f"const {new_path.stem} image_rom[] = {{\n")
+        file.write(f"const char image_rom[{x}][{y}] = {{\n")
 
         for j in range(y):
+            file.write("{")
             for i in range(x):
                 r, g, b = pixel_image[i, j][0:3]
-                file.write(f"    {{{r}, {g}, {b}}},\n")
+                color = (r * 6 // 256) * 36 + (g * 6 // 256) * 6 + (b * 6 // 256)
+                file.write(f"   {color},\n")
+            file.write("},\n")
 
         file.write("};\n\n")
         file.write(f"#endif // __{new_path.stem.upper()}__\n")
 
+
 def show_image(image_path: str) -> None:
     image = Image.open(image_path)
     image.show()
+
 
 if __name__ == "__main__":
     # Ensure required folders exist
