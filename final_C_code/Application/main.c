@@ -23,9 +23,9 @@
 
 #define DINO_X           (left_boundary + 10)
 			     
-#define GROUND_Y         (bottom_boundary - 40)
+#define GROUND_Y         (bottom_boundary - 34)
 
-#define GROUND_Y_OBS     (bottom_boundary - 32)
+#define GROUND_Y_OBS     (bottom_boundary - 26)
 
 
 //Global variables
@@ -36,16 +36,22 @@ static int pause;
 
 int switches;
 
-int jump_pos[23] = {0,4,8,12,16,20,24,28,32,36,40,44,40,36,32,28,24,20,16,12,8,4,0};
+int jump_pos[23] = {0,4,7,12,16,20,24,28,32,36,40,44,40,36,32,28,24,20,16,12,7,4,0};
 int dino_moved=1;
 int jump_counter = 0;
 int jumping = 0;
 
 static int dinospeed;
 static int obsspeed;
-static int speed_table[14]={20,30,40,50,60,70,80,90,100,110,120,130,140,150};
+static int speed_table[18]={20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,200};
 static int spawn_counter = 0;
 static int rand_spawn;
+
+int leaderboard[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+int board = 0;
+int shift = 0;
+int store = 0;
+int new_high = 0;
 
 struct Dino{
 	int x[5]; //leave room for multiple rectangles
@@ -100,7 +106,18 @@ void Game_Init(void)
 	printf("\nSwitch 2 HARD");
 	printf("\nSwitch 3 EXTREME");
 	printf("\nGame speeds up as you play");
-  	printf("\n---------------------------");
+	printf("\n---------------------------");
+	printf("\nCurrent High Scores");
+
+	for(board = 0; board < 10; board++)
+	{
+		if(board % 2 == 0)
+			printf("\n");
+		else
+			printf("     ");
+		printf("%d. %d",(board+1),leaderboard[board]);
+	}
+
 	printf("\nPress any key to start\n");	
 	while(KBHIT()==0);
 
@@ -119,13 +136,13 @@ void Game_Init(void)
 
 	switches = GPIO_read();
 	if(switches == 1){
-		obs.speed = 4;
+		obs.speed = 5;
 		printf("\n-------  NORMAL  -------");
 	} else if (switches == 3){
-		obs.speed = 5;
+		obs.speed = 8;
 		printf("\n-------  HARD  -------");
 	} else if (switches == 7){
-		obs.speed = 6;
+		obs.speed = 8;
 		printf("\n----- EXTREME -----");
 	}else{
 		obs.speed = 3;
@@ -168,6 +185,17 @@ int GameOver(void){
 	NVIC_DisableIRQ(Timer2_IRQn);	
 	printf("\nGame over\n");
 	printf("\nYou Jumped Over %d\n",score);
+	printf("\nCurrent High Scores");
+	update_score();
+	for(board = 0; board < 10; board++)
+	{
+		if(board % 2 == 0)
+			printf("\n");
+		else
+			printf("     ");
+		printf("%d. %d",(board+1),leaderboard[board]);
+	}
+
 	printf("\nPress 'q' to quit");
 	printf("\nPress 'r' to replay");
 	printf("\nChoose Your Difficulty\n");
@@ -186,6 +214,33 @@ int GameOver(void){
 			printf("\nInvalid input");
 	}
 		
+}
+
+int update_score(void) {
+	for(board = 0; board < 10; board++)
+	{
+		if(score < leaderboard[board] && !new_high)
+			continue;
+		else if(score > leaderboard[board] && !new_high)
+		{
+			new_high = 1;
+			shift = leaderboard[board];
+			leaderboard[board] = score;
+		}
+		else
+		{
+			store = leaderboard[board];
+			leaderboard[board] = shift;
+			shift = store;
+		}
+			
+		if(board == 9 && new_high)
+		{
+			printf("\nScore added to leaderboard");
+			new_high  = 0;
+		}
+	}
+	return 0;
 }
 
 int draw_dino(void) {
@@ -323,20 +378,6 @@ void Timer_ISR(void) {
         // Draw updated Dino
         draw_dino();
 
-		if (jump_counter <= 3 || jump_counter >= 19) {
-
-			if(obs.pos_counter > 64 && obs.pos_counter < 81){
-				if (GameOver()==0){
-					Game_Close();
-					return;
-				}
-				else{
-					Game_Init();
-					return;
-				}
-
-			}
-		}
 
 
     }else{
@@ -358,17 +399,22 @@ void Timer2_ISR(void) {
 				obs.pos_counter = 0;
 				score++;
 				if(switches ==7){
-						obs.speed = random(8,13);
+						obs.speed = random(10,16);
 						obsspeed = speed_table[obs.speed];
 						timer2_init((Timer_Load_Value_For_One_Sec / obsspeed), Timer_Prescaler, 1);
 						timer2_enable();
 				}else{	
-					if (score % 3 == 0 && obs.speed < 12) {
+					if (score % 3 == 0 && obs.speed < 16) {
 						obs.speed++;
-						if(obs.speed >=13){
-							obs.speed= 13;
+						if(obs.speed >=17){
+							obs.speed= 17;
 						}
-						obsspeed = speed_table[obs.speed];
+						
+						if(score>50){
+						obsspeed = obsspeed+20;
+						}else{
+							obsspeed = speed_table[obs.speed];
+						}
 						timer2_init((Timer_Load_Value_For_One_Sec / obsspeed), Timer_Prescaler, 1);
 						timer2_enable();
 					}
@@ -385,9 +431,9 @@ void Timer2_ISR(void) {
 				if(switches == 1){
 					rand_spawn = random(50,100);
 				} else if (switches == 3){
-					rand_spawn = random(25,50);
+					rand_spawn = random(50,75);
 				} else if (switches == 7){
-					rand_spawn = random(5,15);
+					rand_spawn = random(40,60);
 				}else{
 					rand_spawn = random(50,100);
 				}
@@ -402,6 +448,23 @@ void Timer2_ISR(void) {
 				obs.pos_counter = 0;
 			}
 		}
+
+		if (jump_counter <= 2 || jump_counter >= 20) {
+
+			if(obs.pos_counter > 64 && obs.pos_counter < 75){
+				draw_obstacle();
+				if (GameOver()==0){
+					Game_Close();
+					return;
+				}
+				else{
+					Game_Init();
+					return;
+				}
+
+			}
+		}
+
 	}
     timer2_irq2_clear();
 }
