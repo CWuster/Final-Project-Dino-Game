@@ -6,10 +6,16 @@
 #include "core_cm0.h"
 #include "edk_api.h"
 #include "edk_driver.h"
+<<<<<<< HEAD
 #include <stdio.h>
 #include "modified_dino.h" 
 #include "modified_cactus.h" 
 
+=======
+
+#include <stdio.h>
+
+>>>>>>> 7ec0088b5a2306d8679269bbeaa73978b1064fe3
 // Game region
 #define left_boundary 5
 #define right_boundary 96
@@ -18,11 +24,18 @@
 #define boundary_thick 1
 
 #define DINO_X (left_boundary + 10)
+<<<<<<< HEAD
 #define GROUND_Y (bottom_boundary - 36)
 
 #define GROUND_Y_OBS (bottom_boundary - 25)
 #define BACKGROUND_COLOR BLACK
 #define DINO_COLOR GREEN
+=======
+#define GROUND_Y (bottom_boundary - 40)
+
+#define GROUND_Y_OBS (bottom_boundary - 25)
+
+>>>>>>> 7ec0088b5a2306d8679269bbeaa73978b1064fe3
 // Global variables
 static int i;
 static char key;
@@ -119,6 +132,27 @@ void Game_Close(void) {
 
 int GameOver(void) {
   char key;
+<<<<<<< HEAD
+=======
+
+  NVIC_DisableIRQ(UART_IRQn);
+  NVIC_DisableIRQ(Timer_IRQn);
+  printf("\nGame over\n");
+  printf("\nPress 'q' to quit");
+  printf("\nPress 'r' to replay");
+  while (1) {
+    while (KBHIT() == 0)
+      ;
+    key = UartGetc();
+    if (key == RESET) {
+      return 1;
+    } else if (key == QUIT) {
+      return 0;
+    } else
+      printf("\nInvalid input");
+  }
+}
+>>>>>>> 7ec0088b5a2306d8679269bbeaa73978b1064fe3
 
   NVIC_DisableIRQ(UART_IRQn);
   NVIC_DisableIRQ(Timer_IRQn);
@@ -142,6 +176,7 @@ int GameOver(void) {
 //  return 0;
 //}
 int draw_dino(void) {
+<<<<<<< HEAD
 	int i, j;
 	int rows = sizeof(modified_dino_rom) / sizeof(modified_dino_rom[0]);          // height
 	int cols = sizeof(modified_dino_rom[0]) / sizeof(modified_dino_rom[0][0]);    // width
@@ -154,6 +189,10 @@ int draw_dino(void) {
 		}
 	}
 	return 0;
+=======
+  rectangle(dino.x[0], dino.y[0], dino.x[0] + 10, dino.y[0] + 20, WHITE);
+  return 0;
+>>>>>>> 7ec0088b5a2306d8679269bbeaa73978b1064fe3
 }
 
 int clear_dino(void) {
@@ -162,6 +201,7 @@ int clear_dino(void) {
 }
 
 int draw_obstacle(void) {
+<<<<<<< HEAD
 int i, j;
 	int rows = sizeof(modified_cactus_rom) / sizeof(modified_cactus_rom[0]);          // height
 	int cols = sizeof(modified_cactus_rom[0]) / sizeof(modified_cactus_rom[0][0]);    // width
@@ -173,6 +213,10 @@ int i, j;
 			}
 		}
 	}
+=======
+  rectangle(obs.x[0], obs.y[0], obs.x[0] + obs.width, obs.y[0] + obs.height,
+            GREEN);
+>>>>>>> 7ec0088b5a2306d8679269bbeaa73978b1064fe3
   return 0;
 }
 
@@ -273,4 +317,8 @@ int main(void) {
   // Go to sleep mode and wait for interrupts
   while (1)
     __WFI();
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 7ec0088b5a2306d8679269bbeaa73978b1064fe3
