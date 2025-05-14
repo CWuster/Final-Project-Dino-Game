@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\code.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\code.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon May 05 19:50:05 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Tue May 13 23:23:43 2025
 <BR><P>
 <H3>Maximum Stack Usage =        152 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -218,10 +218,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VGA_plot_pixel
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear_obstacle
-<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw_obstacle
 <LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear_dino
 <LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Game_Init
-<LI><a href="#[2e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw_dino
 </UL>
 
 <P><STRONG><a name="[25]"></a>read_switch</STRONG> (Thumb, 8 bytes, Stack size 8 bytes, edk_api.o(.text), UNUSED)
@@ -237,7 +235,9 @@ Global Symbols
 <P><STRONG><a name="[68]"></a>random</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, edk_api.o(.text), UNUSED)
 
 <P><STRONG><a name="[1f]"></a>VGA_plot_pixel</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, edk_driver.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rectangle
+<BR><BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw_obstacle
+<LI><a href="#[2e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;draw_dino
+<LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rectangle
 <LI><a href="#[1e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear_screen
 </UL>
 
@@ -311,10 +311,10 @@ Global Symbols
 <LI><a href="#[1b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sys_exit
 </UL>
 
-<P><STRONG><a name="[2e]"></a>draw_dino</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = draw_dino &rArr; rectangle
+<P><STRONG><a name="[2e]"></a>draw_dino</STRONG> (Thumb, 64 bytes, Stack size 24 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = draw_dino
 </UL>
-<BR>[Calls]<UL><LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rectangle
+<BR>[Calls]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VGA_plot_pixel
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Game_Init
 <LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer_ISR
@@ -356,10 +356,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer_ISR
 </UL>
 
-<P><STRONG><a name="[39]"></a>draw_obstacle</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = draw_obstacle &rArr; rectangle
+<P><STRONG><a name="[39]"></a>draw_obstacle</STRONG> (Thumb, 66 bytes, Stack size 24 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = draw_obstacle
 </UL>
-<BR>[Calls]<UL><LI><a href="#[24]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rectangle
+<BR>[Calls]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;VGA_plot_pixel
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Timer_ISR
 </UL>

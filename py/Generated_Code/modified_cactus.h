@@ -1,0 +1,42 @@
+#ifndef __MODIFIED_CACTUS__
+#define __MODIFIED_CACTUS__
+
+const unsigned char modified_cactus_rom[7][4] = {
+{   0,
+   48,
+   0,
+   0,
+},
+{   0,
+   48,
+   0,
+   48,
+},
+{   48,
+   48,
+   0,
+   48,
+},
+{   48,
+   48,
+   48,
+   0,
+},
+{   48,
+   48,
+   0,
+   0,
+},
+{   0,
+   48,
+   0,
+   0,
+},
+{   0,
+   48,
+   0,
+   0,
+},
+};
+
+#endif // __MODIFIED_CACTUS__
