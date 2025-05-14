@@ -41,7 +41,7 @@ __Vectors		    	DCD		0x00003FFC
 						        				
         				DCD		Timer_Handler
         				DCD		UART_Handler
-        				DCD		0
+        				DCD		Timer2_Handler
         				DCD		0
         				DCD		0
         				DCD		0
@@ -74,6 +74,14 @@ Timer_Handler   PROC
                 POP     {R0,R1,R2,PC}                    ;return
                 ENDP
 
+Timer2_Handler PROC
+    EXPORT Timer2_Handler
+    IMPORT Timer2_ISR
+    PUSH   {R0-R2, LR}
+    BL     Timer2_ISR
+    POP    {R0-R2, PC}
+    ENDP
+	
 UART_Handler    PROC
                 EXPORT UART_Handler
 				IMPORT UART_ISR

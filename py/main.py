@@ -32,27 +32,17 @@ def generate_raw_data(image_path: str) -> None:
     with open(c_array_path / c_array, "w") as file:
         file.write(f"#ifndef __{new_path.stem.upper()}__\n")
         file.write(f"#define __{new_path.stem.upper()}__\n\n")
-<<<<<<< HEAD
         file.write(f"const unsigned char {new_path.stem}_rom[{y}][{x}] = {{\n")
-=======
-        file.write(f"const unsigned char {new_path.stem}_rom[{x}][{y}] = {{\n")
->>>>>>> 7ec0088b5a2306d8679269bbeaa73978b1064fe3
 
         for j in range(y):
             file.write("{")
             for i in range(x):
-<<<<<<< HEAD
                 r, g, b, a = pixel_image[i, j]
-                color = (r * 6 // 256) * 36 + (g * 6 // 256) * 6 + (b * 6 // 256)
                 if a == 0:
                     file.write(f"   {0},\n")
                 else:
+                    color = (r * 6 // 256) * 36 + (g * 6 // 256) * 6 + (b * 6 // 256)
                     file.write(f"   {color},\n")
-=======
-                r, g, b = pixel_image[i, j][0:3]
-                color = (r * 6 // 256) * 36 + (g * 6 // 256) * 6 + (b * 6 // 256)
-                file.write(f"   {color},\n")
->>>>>>> 7ec0088b5a2306d8679269bbeaa73978b1064fe3
             file.write("},\n")
 
         file.write("};\n\n")
@@ -74,12 +64,7 @@ if __name__ == "__main__":
     cactus_image_path = "./Images/cactus.png"
 
     # Resize and convert to C header format
-<<<<<<< HEAD
     # resize_image(dino_image_path, (25, 25))
     # resize_image(cactus_image_path, (10, 10))
-=======
-    resize_image(dino_image_path, (10, 20))
-    resize_image(cactus_image_path, (5, 5))
->>>>>>> 7ec0088b5a2306d8679269bbeaa73978b1064fe3
     generate_raw_data("./Modified_Images/modified_dino.png")
     generate_raw_data("./Modified_Images/modified_cactus.png")

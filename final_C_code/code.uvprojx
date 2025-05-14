@@ -429,16 +429,6 @@
               <FileType>1</FileType>
               <FilePath>.\Application\main.c</FilePath>
             </File>
-            <File>
-              <FileName>modified_cactus.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\py\Generated_Code\modified_cactus.h</FilePath>
-            </File>
-            <File>
-              <FileName>modified_dino.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\py\Generated_Code\modified_dino.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

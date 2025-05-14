@@ -19,6 +19,7 @@
 #define AHB_7SEG_BASE				0x54000000
 #define NVIC_INT_ENABLE			0xE000E100
 
+#define AHB_TIMER2_BASE    0x55000000
 
 
 //--------------------------------------------------------
@@ -92,7 +93,7 @@ typedef struct
 #define SEVSEG          ((SEVENSEG_TypeDef  *) AHB_7SEG_BASE  )
 #define VGA							((VGA_TypeDef   *) AHB_VGA_BASE   )
 
-
+#define TIMER2          ((TIMER_TypeDef *) AHB_TIMER2_BASE )
 
 //--------------------------------------------------------
 // Peripheral driver functions
@@ -108,6 +109,10 @@ void timer_init(int load_value, int prescale, int mode);			//Initialize the time
 void timer_enable(void);				//Enable the timer
 	
 void timer_irq_clear(void);			//Clear interrupt request from timer
+
+void timer2_init(int load_value, int prescale, int mode);
+void timer2_enable(void);
+void timer2_irq2_clear(void);
 
 int GPIO_read(void);						//GPIO read (from switches)
 

@@ -10,7 +10,6 @@
 #include "core_cmFunc.h"
 #include "core_cmInstr.h"
 
-
 //---------------------------------------------
 // SoC initialization
 //---------------------------------------------
@@ -18,6 +17,7 @@
 void SoC_init(void){
 	NVIC_SetPriority (Timer_IRQn, 0x00);		//Set timer a higher priority
 	NVIC_SetPriority (UART_IRQn, 0x40);			//Set UART a lower priority
+	NVIC_SetPriority (Timer2_IRQn, 0x00);  
 	seven_seg_write(0,0,0,0);								//Clean 7-segment display
 	clear_screen();	
 	SCB -> SCR = 1<1;												//Enable sleep-on-exit bit

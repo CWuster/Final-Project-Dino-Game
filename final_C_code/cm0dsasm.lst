@@ -57,7 +57,7 @@ ARM Macro Assembler    Page 1
    41 00000040         
    42 00000040 00000000        DCD              Timer_Handler
    43 00000044 00000000        DCD              UART_Handler
-   44 00000048 00000000        DCD              0
+   44 00000048 00000000        DCD              Timer2_Handler
    45 0000004C 00000000        DCD              0
    46 00000050 00000000        DCD              0
    47 00000054 00000000        DCD              0
@@ -85,7 +85,7 @@ ARM Macro Assembler    Page 2
    62 00000000                 GLOBAL           Reset_Handler
    63 00000000                 ENTRY
    64 00000000                 IMPORT           __main
-   65 00000000 4807            LDR              R0, =__main
+   65 00000000 4809            LDR              R0, =__main
    66 00000002 4700            BX               R0          ;Branch to __main
    67 00000004                 ENDP
    68 00000004         
@@ -98,42 +98,51 @@ ARM Macro Assembler    Page 2
    74 0000000A BD07            POP              {R0,R1,R2,PC} ;return
    75 0000000C                 ENDP
    76 0000000C         
-   77 0000000C         UART_Handler
+   77 0000000C         Timer2_Handler
                                PROC
-   78 0000000C                 EXPORT           UART_Handler
-   79 0000000C                 IMPORT           UART_ISR
-   80 0000000C B507            PUSH             {R0,R1,R2,LR}
-   81 0000000E F7FF FFFE       BL               UART_ISR
-   82 00000012 BD07            POP              {R0,R1,R2,PC}
+   78 0000000C                 EXPORT           Timer2_Handler
+   79 0000000C                 IMPORT           Timer2_ISR
+   80 0000000C B507            PUSH             {R0-R2, LR}
+   81 0000000E F7FF FFFE       BL               Timer2_ISR
+   82 00000012 BD07            POP              {R0-R2, PC}
    83 00000014                 ENDP
    84 00000014         
-   85 00000014                 ALIGN            4           ; Align to a word b
+   85 00000014         UART_Handler
+                               PROC
+   86 00000014                 EXPORT           UART_Handler
+   87 00000014                 IMPORT           UART_ISR
+   88 00000014 B507            PUSH             {R0,R1,R2,LR}
+   89 00000016 F7FF FFFE       BL               UART_ISR
+   90 0000001A BD07            POP              {R0,R1,R2,PC}
+   91 0000001C                 ENDP
+   92 0000001C         
+   93 0000001C                 ALIGN            4           ; Align to a word b
                                                             oundary
-   86 00000014         
-   87 00000014         ; User Initial Stack & Heap
-   88 00000014                 IF               :DEF:__MICROLIB
-   93 00000014                 IMPORT           __use_two_region_memory
-   94 00000014                 EXPORT           __user_initial_stackheap
-   95 00000014         __user_initial_stackheap
-   96 00000014         
-   97 00000014 4803            LDR              R0, =  Heap_Mem
-   98 00000016 4904            LDR              R1, =(Stack_Mem + Stack_Size)
-   99 00000018 4A04            LDR              R2, = (Heap_Mem +  Heap_Size)
-  100 0000001A 4B05            LDR              R3, = Stack_Mem
-  101 0000001C 4770            BX               LR
-  102 0000001E         
-  103 0000001E 00 00           ALIGN
-  104 00000020         
-  105 00000020                 ENDIF
-  106 00000020         
-  107 00000020                 END
-              00000000 
+   94 0000001C         
+   95 0000001C         ; User Initial Stack & Heap
+   96 0000001C                 IF               :DEF:__MICROLIB
+  101 0000001C                 IMPORT           __use_two_region_memory
+  102 0000001C                 EXPORT           __user_initial_stackheap
+  103 0000001C         __user_initial_stackheap
+  104 0000001C         
+  105 0000001C 4803            LDR              R0, =  Heap_Mem
+  106 0000001E 4904            LDR              R1, =(Stack_Mem + Stack_Size)
+  107 00000020 4A04            LDR              R2, = (Heap_Mem +  Heap_Size)
 
 
 
 ARM Macro Assembler    Page 3 
 
 
+  108 00000022 4B05            LDR              R3, = Stack_Mem
+  109 00000024 4770            BX               LR
+  110 00000026         
+  111 00000026 00 00           ALIGN
+  112 00000028         
+  113 00000028                 ENDIF
+  114 00000028         
+  115 00000028                 END
+              00000000 
               00000000 
               00000400 
               00000400 
@@ -164,8 +173,8 @@ Symbol: Stack_Mem
    Definitions
       At line 4 in file Device\cm0dsasm.s
    Uses
-      At line 98 in file Device\cm0dsasm.s
-      At line 100 in file Device\cm0dsasm.s
+      At line 106 in file Device\cm0dsasm.s
+      At line 108 in file Device\cm0dsasm.s
 
 __initial_sp 00000400
 
@@ -196,8 +205,8 @@ Symbol: Heap_Mem
    Definitions
       At line 11 in file Device\cm0dsasm.s
    Uses
-      At line 97 in file Device\cm0dsasm.s
-      At line 99 in file Device\cm0dsasm.s
+      At line 105 in file Device\cm0dsasm.s
+      At line 107 in file Device\cm0dsasm.s
 
 __heap_base 00000000
 
@@ -262,6 +271,15 @@ Symbol: Reset_Handler
       At line 24 in file Device\cm0dsasm.s
       At line 62 in file Device\cm0dsasm.s
 
+Timer2_Handler 0000000C
+
+Symbol: Timer2_Handler
+   Definitions
+      At line 77 in file Device\cm0dsasm.s
+   Uses
+      At line 44 in file Device\cm0dsasm.s
+      At line 78 in file Device\cm0dsasm.s
+
 Timer_Handler 00000004
 
 Symbol: Timer_Handler
@@ -271,24 +289,24 @@ Symbol: Timer_Handler
       At line 42 in file Device\cm0dsasm.s
       At line 70 in file Device\cm0dsasm.s
 
-UART_Handler 0000000C
+UART_Handler 00000014
 
 Symbol: UART_Handler
    Definitions
-      At line 77 in file Device\cm0dsasm.s
+      At line 85 in file Device\cm0dsasm.s
    Uses
       At line 43 in file Device\cm0dsasm.s
-      At line 78 in file Device\cm0dsasm.s
+      At line 86 in file Device\cm0dsasm.s
 
-__user_initial_stackheap 00000014
+__user_initial_stackheap 0000001C
 
 Symbol: __user_initial_stackheap
    Definitions
-      At line 95 in file Device\cm0dsasm.s
+      At line 103 in file Device\cm0dsasm.s
    Uses
-      At line 94 in file Device\cm0dsasm.s
+      At line 102 in file Device\cm0dsasm.s
 Comment: __user_initial_stackheap used once
-5 symbols
+6 symbols
 
 
 
@@ -302,7 +320,7 @@ Symbol: Heap_Size
       At line 8 in file Device\cm0dsasm.s
    Uses
       At line 11 in file Device\cm0dsasm.s
-      At line 99 in file Device\cm0dsasm.s
+      At line 107 in file Device\cm0dsasm.s
 
 Stack_Size 00000400
 
@@ -311,7 +329,7 @@ Symbol: Stack_Size
       At line 1 in file Device\cm0dsasm.s
    Uses
       At line 4 in file Device\cm0dsasm.s
-      At line 98 in file Device\cm0dsasm.s
+      At line 106 in file Device\cm0dsasm.s
 
 2 symbols
 
@@ -320,6 +338,14 @@ Symbol: Stack_Size
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 External symbols
 
+Timer2_ISR 00000000
+
+Symbol: Timer2_ISR
+   Definitions
+      At line 79 in file Device\cm0dsasm.s
+   Uses
+      At line 81 in file Device\cm0dsasm.s
+Comment: Timer2_ISR used once
 Timer_ISR 00000000
 
 Symbol: Timer_ISR
@@ -332,9 +358,9 @@ UART_ISR 00000000
 
 Symbol: UART_ISR
    Definitions
-      At line 79 in file Device\cm0dsasm.s
+      At line 87 in file Device\cm0dsasm.s
    Uses
-      At line 81 in file Device\cm0dsasm.s
+      At line 89 in file Device\cm0dsasm.s
 Comment: UART_ISR used once
 __main 00000000
 
@@ -348,9 +374,9 @@ __use_two_region_memory 00000000
 
 Symbol: __use_two_region_memory
    Definitions
-      At line 93 in file Device\cm0dsasm.s
+      At line 101 in file Device\cm0dsasm.s
    Uses
       None
 Comment: __use_two_region_memory unused
-4 symbols
-358 symbols in table
+5 symbols
+360 symbols in table
