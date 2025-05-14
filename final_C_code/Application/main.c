@@ -108,8 +108,8 @@ void Game_Init(void)
 	dino.y[0] = GROUND_Y;
 
 	obs.y[0] = GROUND_Y_OBS; // Make sure GROUND_Y matches your floor
-	obs.width =5;
-	obs.height=12;
+	obs.width =4;
+	obs.height=7;
 	obs.active=0;
 	obs.pos_counter =0;
 		
