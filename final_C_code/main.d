@@ -1,7 +1,7 @@
 .\main.o: Application\main.c
 .\main.o: .\Device\EDK_CM0.h
 .\main.o: .\Core\core_cm0.h
-.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\main.o: C:\Users\Jay\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 .\main.o: .\Core\core_cmInstr.h
 .\main.o: .\Core\core_cmFunc.h
 .\main.o: .\Device\edk_driver.h
@@ -9,4 +9,4 @@
 .\main.o: .\Device\edk_api.h
 .\main.o: Application\modified_cactus.h
 .\main.o: Application\modified_dino.h
-.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\main.o: C:\Users\Jay\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h

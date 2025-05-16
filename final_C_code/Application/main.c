@@ -219,17 +219,11 @@ int GameOver(void){
 int update_score(void) {
 	for(board = 0; board < 10; board++)
 	{
-<<<<<<< HEAD
 		if(score <= leaderboard[9])
 			break;
 		if(score < leaderboard[board] && !new_high)
 			continue;
 		if(score > leaderboard[board] && !new_high)
-=======
-		if(score < leaderboard[board] && !new_high)
-			continue;
-		else if(score > leaderboard[board] && !new_high)
->>>>>>> 2c09d261cec00a044a2f2904be79af072b4f688d
 		{
 			new_high = 1;
 			shift = leaderboard[board];
@@ -245,11 +239,7 @@ int update_score(void) {
 		if(board == 9 && new_high)
 		{
 			printf("\nScore added to leaderboard");
-<<<<<<< HEAD
 			new_high = 0;
-=======
-			new_high  = 0;
->>>>>>> 2c09d261cec00a044a2f2904be79af072b4f688d
 		}
 	}
 	return 0;
