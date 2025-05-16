@@ -1,9 +1,9 @@
 .\retarget.o: Device\retarget.c
-.\retarget.o: C:\Users\Jay\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
-.\retarget.o: C:\Users\Jay\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\time.h
-.\retarget.o: C:\Users\Jay\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\rt_misc.h
-.\retarget.o: C:\Users\Jay\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
-.\retarget.o: C:\Users\Jay\AppData\Local\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+.\retarget.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\retarget.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+.\retarget.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\rt_misc.h
+.\retarget.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\retarget.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\retarget.o: Device\EDK_CM0.h
 .\retarget.o: Device\edk_driver.h
 .\retarget.o: .\Core\core_cm0.h
